@@ -7,7 +7,7 @@ Set ENDPOINT_BASE_URL before running.
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, Literal
 
 import requests
 from mcp.server.fastmcp import FastMCP
@@ -28,10 +28,14 @@ def get_open_alerts() -> dict:
 
 
 @mcp.tool(name="escalate_alert", description="POST /alerts/{alert_id}/escalate")
-def escalate_alert(alert_id: Any = None) -> dict:
+def escalate_alert(
+    alert_id: Any = None,
+    severity: Literal["low", "medium", "high", "critical"] | None = None,
+) -> dict:
     url = f"{os.environ["ENDPOINT_BASE_URL"]}/alerts/{alert_id}/escalate"
     headers = {}
-    resp = requests.post(url, headers=headers)
+    params = {"severity": severity} if severity is not None else {}
+    resp = requests.post(url, headers=headers, params=params)
     resp.raise_for_status()
     try:
         return resp.json()

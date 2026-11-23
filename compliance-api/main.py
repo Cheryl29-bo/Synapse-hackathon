@@ -11,7 +11,7 @@ class Alert(BaseModel):
     alert_id: str
     account_id: str
     title: str
-    severity: Literal["low", "medium", "high"]
+    severity: Literal["low", "medium", "high", "critical"]
     status: Literal["open", "escalated", "closed"]
     description: str
     created_at: datetime
@@ -36,11 +36,15 @@ def get_open_alerts() -> list[Alert]:
 
 
 @app.post("/alerts/{alert_id}/escalate", response_model=Alert)
-def escalate_alert(alert_id: str) -> Alert:
+def escalate_alert(
+    alert_id: str, severity: Literal["low", "medium", "high", "critical"] | None = None
+) -> Alert:
     alert = ALERTS.get(alert_id)
     if alert is None:
         raise HTTPException(status_code=404, detail="Alert not found")
     if alert.status == "closed":
         raise HTTPException(status_code=409, detail="Closed alerts cannot be escalated")
     alert.status = "escalated"
+    if severity is not None:
+        alert.severity = severity
     return alert

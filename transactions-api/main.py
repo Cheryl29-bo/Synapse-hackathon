@@ -86,6 +86,6 @@ def get_account_history(account_id: str) -> AccountHistory:
     return AccountHistory(account=account, transactions=transactions)
 
 @app.post("/accounts/{account_id}/freeze")
-def freeze_account(account_id: str, reason: str):
+def freeze_account(account_id: str, reason: str = "Suspected confirmed fraud"):
   """Immediately freeze a bank account suspected of confirmed fraud."""
   return {"account_id": account_id, "status": "FROZEN", "reason": reason}
