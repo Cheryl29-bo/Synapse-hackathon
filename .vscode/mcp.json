@@ -1,0 +1,24 @@
+{
+  "servers": {
+    "transactions-mcp": {
+      "type": "stdio",
+      "command": "/home/codespace/.python/current/bin/python3",
+      "args": [
+        "/workspaces/Synapse-hackathon/transactions-api/synapse_auto_server_2.py"
+      ],
+      "env": {
+        "ENDPOINT_BASE_URL": "http://127.0.0.1:8001"
+      }
+    },
+    "compliance-mcp": {
+      "type": "stdio",
+      "command": "/home/codespace/.python/current/bin/python3",
+      "args": [
+        "/workspaces/Synapse-hackathon/compliance-api/synapse_auto_server.py"
+      ],
+      "env": {
+        "ENDPOINT_BASE_URL": "http://127.0.0.1:8002"
+      }
+    }
+  }
+}
